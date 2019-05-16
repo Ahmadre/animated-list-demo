@@ -45,7 +45,7 @@ List<UserModel> listData = [
     lastName: "Stoll",
     herotag: "two",
     profileImageUrl:
-        "https://randomuser.me/api/portraits/woman/2.jpg",
+        "https://randomuser.me/api/portraits/women/2.jpg",
   ),
   UserModel(
     firstName: "Simon",
@@ -59,7 +59,7 @@ List<UserModel> listData = [
     lastName: "Meijer",
     herotag: "four",
     profileImageUrl:
-        "https://randomuser.me/api/portraits/woman/4.jpg",
+        "https://randomuser.me/api/portraits/women/4.jpg",
   ),
   UserModel(
     firstName: "Mariano",
