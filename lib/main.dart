@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_list_demo/components/ImageViewer.dart';
 
 void main() {
   runApp(
@@ -10,10 +11,11 @@ void main() {
 }
 
 class UserModel {
-  UserModel({this.firstName, this.lastName, this.profileImageUrl});
+  UserModel({this.firstName, this.lastName, this.profileImageUrl, this.herotag});
   String firstName;
   String lastName;
   String profileImageUrl;
+  String herotag;
 
   @override
   bool operator ==(Object other) =>
@@ -22,35 +24,40 @@ class UserModel {
           runtimeType == other.runtimeType &&
           firstName == other.firstName &&
           lastName == other.lastName &&
-          profileImageUrl == other.profileImageUrl;
+          profileImageUrl == other.profileImageUrl &&
+          herotag == other.herotag;
 
   @override
   int get hashCode =>
-      firstName.hashCode ^ lastName.hashCode ^ profileImageUrl.hashCode;
+      firstName.hashCode ^ lastName.hashCode ^ profileImageUrl.hashCode ^ herotag.hashCode;
 }
 
 List<UserModel> listData = [
   UserModel(
     firstName: "Nash",
     lastName: "Ramdial",
+    herotag: "one",
     profileImageUrl:
         "https://randomuser.me/api/portraits/men/1.jpg",
   ),
   UserModel(
     firstName: "Scott",
     lastName: "Stoll",
+    herotag: "two",
     profileImageUrl:
         "https://randomuser.me/api/portraits/woman/2.jpg",
   ),
   UserModel(
     firstName: "Simon",
     lastName: "Lightfoot",
+    herotag: "three",
     profileImageUrl:
         "https://randomuser.me/api/portraits/men/3.jpg",
   ),
   UserModel(
     firstName: "Jay",
     lastName: "Meijer",
+    herotag: "four",
     profileImageUrl:
         "https://randomuser.me/api/portraits/woman/4.jpg",
   ),
@@ -79,6 +86,7 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
       UserModel(
         firstName: "Norbert",
         lastName: "Kozsir",
+        herotag: Random().nextInt(999).toString(),
         profileImageUrl:
             "https://randomuser.me/api/portraits/men/" + randomImageGenerator() + ".jpg",
       ),
@@ -109,17 +117,27 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
     );
   }
 
+  void showProfileImage(UserModel user) {
+     Navigator.push(
+      context,
+      new MaterialPageRoute(
+          builder: (context) => new ImageViewer(imageURL: user.profileImageUrl, heroTag: user.herotag)));
+  }
+
   Widget _buildItem(UserModel user, [int index]) {
     return Dismissible(
       key: ValueKey<UserModel>(user),
       onDismissed: (direction) => deleteUser(index),
       child: index != null ? ListTile(
+      onTap: user.profileImageUrl != null ? () => showProfileImage(user) : null,
       key: ValueKey<UserModel>(user),
       title: Text(user.firstName),
       subtitle: Text(user.lastName),
-      leading: CircleAvatar(
+      leading: Hero(
+        tag: user.herotag,
+        child: CircleAvatar(
         backgroundImage: NetworkImage(user.profileImageUrl),
-      ),
+      )),
     ): null);
   }
 
