@@ -64,6 +64,7 @@ List<UserModel> listData = [
   UserModel(
     firstName: "Mariano",
     lastName: "Zorrilla",
+    herotag: "five",
     profileImageUrl:
         "https://randomuser.me/api/portraits/men/5.jpg",
   ),
