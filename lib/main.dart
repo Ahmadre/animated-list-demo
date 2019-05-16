@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -33,31 +34,31 @@ List<UserModel> listData = [
     firstName: "Nash",
     lastName: "Ramdial",
     profileImageUrl:
-        "https://pbs.twimg.com/profile_images/1035253589894197256/qNuF8w6e_400x400.jpg",
+        "https://randomuser.me/api/portraits/men/1.jpg",
   ),
   UserModel(
     firstName: "Scott",
     lastName: "Stoll",
     profileImageUrl:
-        "https://pbs.twimg.com/profile_images/997431887286030336/QinQPXjS_400x400.jpg",
+        "https://randomuser.me/api/portraits/woman/2.jpg",
   ),
   UserModel(
     firstName: "Simon",
     lastName: "Lightfoot",
     profileImageUrl:
-        "https://pbs.twimg.com/profile_images/1017532253394624513/LgFqlJ4U_400x400.jpg",
+        "https://randomuser.me/api/portraits/men/3.jpg",
   ),
   UserModel(
     firstName: "Jay",
     lastName: "Meijer",
     profileImageUrl:
-        "https://pbs.twimg.com/profile_images/1000361976361611264/Ty8LbTKx_400x400.jpg",
+        "https://randomuser.me/api/portraits/woman/4.jpg",
   ),
   UserModel(
     firstName: "Mariano",
     lastName: "Zorrilla",
     profileImageUrl:
-        "https://ca.slack-edge.com/TADUGCD9D-UC5F6HJ6T-gfbe5883d03f-1024",
+        "https://randomuser.me/api/portraits/men/5.jpg",
   ),
 ];
 
@@ -68,6 +69,10 @@ class AnimatedListDemo extends StatefulWidget {
 class _AnimatedListDemoState extends State<AnimatedListDemo> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey();
 
+  String randomImageGenerator() {
+    return new Random().nextInt(99).toString();
+  }
+
   void addUser() {
     int index = listData.length;
     listData.add(
@@ -75,11 +80,11 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
         firstName: "Norbert",
         lastName: "Kozsir",
         profileImageUrl:
-            "https://pbs.twimg.com/profile_images/970033173013958656/Oz3SLVat_400x400.jpg",
+            "https://randomuser.me/api/portraits/men/" + randomImageGenerator() + ".jpg",
       ),
     );
     _listKey.currentState
-        .insertItem(index, duration: Duration(milliseconds: 500));
+        .insertItem(index, duration: Duration(milliseconds: 300));
   }
 
   void deleteUser(int index) {
@@ -87,7 +92,9 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
     _listKey.currentState.removeItem(
       index,
       (BuildContext context, Animation<double> animation) {
-        return FadeTransition(
+        return /* ScaleTransition(
+              scale: CurvedAnimation(parent: animation, curve: Interval(0.5, 1.0)),
+              alignment: Alignment.centerRight, */FadeTransition(
           opacity:
               CurvedAnimation(parent: animation, curve: Interval(0.5, 1.0)),
           child: SizeTransition(
@@ -98,20 +105,22 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
           ),
         );
       },
-      duration: Duration(milliseconds: 600),
+      duration: Duration(milliseconds: 300),
     );
   }
 
   Widget _buildItem(UserModel user, [int index]) {
-    return ListTile(
+    return Dismissible(
+      key: ValueKey<UserModel>(user),
+      onDismissed: (direction) => deleteUser(index),
+      child: index != null ? ListTile(
       key: ValueKey<UserModel>(user),
       title: Text(user.firstName),
       subtitle: Text(user.lastName),
       leading: CircleAvatar(
         backgroundImage: NetworkImage(user.profileImageUrl),
       ),
-      onLongPress: index != null ? () => deleteUser(index) : null,
-    );
+    ): null);
   }
 
   @override
@@ -134,6 +143,11 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
               opacity: animation,
               child: _buildItem(listData[index], index),
             );
+            /* return ScaleTransition(
+              scale: animation,
+              alignment: Alignment.centerRight,
+              child: _buildItem(listData[index], index),
+            ); */
           },
         ),
       ),
