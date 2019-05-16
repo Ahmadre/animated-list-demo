@@ -127,6 +127,7 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
   Widget _buildItem(UserModel user, [int index]) {
     return Dismissible(
       key: ValueKey<UserModel>(user),
+      background: Container(color: Colors.redAccent),
       onDismissed: (direction) => deleteUser(index),
       child: index != null ? ListTile(
       onTap: user.profileImageUrl != null ? () => showProfileImage(user) : null,
