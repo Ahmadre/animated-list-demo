@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_list_demo/components/ImageViewer.dart';
+import 'package:flutteranimatedlistdemo/components/ImageViewer.dart';
 
 void main() {
   runApp(
@@ -119,10 +119,10 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
   }
 
   void showProfileImage(UserModel user) {
-     Navigator.push(
+     /* Navigator.push(
       context,
       new MaterialPageRoute(
-          builder: (context) => new ImageViewer(imageURL: user.profileImageUrl, heroTag: user.herotag)));
+          builder: (context) => new ImageViewer(imageURL: user.profileImageUrl, heroTag: user.herotag))); */
   }
 
   Widget _buildItem(UserModel user, [int index]) {
